@@ -7,12 +7,12 @@ Refer to [Tutorials/Next](https://www.section.io/docs/tutorials/next) for detail
 ```bash
 # Build and push next.js image
 USERNAME=section
-IMAGENAME=next
+IMAGENAME=nextdemo
 TAG=0.0.1
-GITHUB_TOKEN=<insert_token> # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+GITHUB_TOKEN=<INSERT_TOKEN> # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 
 docker build . --tag ghcr.io/$USERNAME/$IMAGENAME:$TAG
-docker run -it --rm -p 1337:3000 $USERNAME/$IMAGENAME:$TAG
+docker run -it --rm -p 1337:3000 ghcr.io/$USERNAME/$IMAGENAME:$TAG
 
 echo $GITHUB_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
 docker push ghcr.io/$USERNAME/$IMAGENAME:$TAG
