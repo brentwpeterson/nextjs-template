@@ -6,16 +6,16 @@ Refer to [Tutorials/Next](https://www.section.io/docs/tutorials/next) for detail
 
 ```bash
 # Build and push next.js image
-USERNAME=section
+USER=section
 IMAGENAME=nextdemo
 TAG=0.0.1
 GITHUB_TOKEN=<INSERT_TOKEN> # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 
-docker build . --tag ghcr.io/$USERNAME/$IMAGENAME:$TAG
-docker run -it --rm -p 1337:3000 ghcr.io/$USERNAME/$IMAGENAME:$TAG
+docker build . --tag ghcr.io/$USER/$IMAGENAME:$TAG
+docker run -it --rm -p 1337:3000 ghcr.io/$USER/$IMAGENAME:$TAG
 
-echo $GITHUB_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
-docker push ghcr.io/$USERNAME/$IMAGENAME:$TAG
+echo $GITHUB_TOKEN | docker login ghcr.io -u $GITHUB_USER --password-stdin
+docker push ghcr.io/$USER/$IMAGENAME:$TAG
 
 # Deploy k8s yamls
 # - Change image name in k8s/webapp-deployment.yaml if using your own image instead
