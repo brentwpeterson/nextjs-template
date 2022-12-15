@@ -1,8 +1,10 @@
 # Deploy a Next.js App on Section Tutorial
 
+![workflow status](https://github.com/section/nextjs-tutorial/actions/workflows/workflows.yaml/badge.svg)
+
 This repo holds the sample code for usage with the tutorials hosted on Section.io's documentations.
 
-Refer to [Tutorials/Next](https://www.section.io/docs/tutorials/next) for detailed instructions on deploying.
+Refer to [Tutorials/Next](https://www.section.io/docs/tutorials/frameworks/next) for detailed instructions on deploying.
 
 ```bash
 # Build and push next.js image
