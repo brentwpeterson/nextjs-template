@@ -1,23 +1,25 @@
-FROM node:alpine as dependencies
-WORKDIR /app
-COPY package.json yarn.lock* package-lock.json* ./
-RUN yarn install --frozen-lockfile
+FROM node:alpine AS build
 
-FROM node:alpine as builder
-WORKDIR /app
-COPY . .
-COPY --from=dependencies /app/node_modules ./node_modules
-RUN yarn build
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm clean-install
 
-FROM node:alpine as runner
-WORKDIR /app
+COPY pages pages/
+COPY public public/
+COPY next.config.js ./
+RUN npm run build
+
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
 ENV NODE_ENV production
-# If you are using a custom next.config.js file, uncomment this line.
-# COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
+
+COPY --from=build /usr/src/app/next.config.js ./
+COPY --from=build /usr/src/app/public public/
+COPY --from=build /usr/src/app/.next .next/
+COPY --from=build /usr/src/app/node_modules node_modules/
+COPY --from=build /usr/src/app/package.json ./
 
 EXPOSE 3000
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]
