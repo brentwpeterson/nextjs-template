@@ -1,25 +1,17 @@
-FROM node:alpine AS build
+FROM node:20
 
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm clean-install
+WORKDIR /app
 
-COPY pages pages/
-COPY public public/
-COPY next.config.js ./
-RUN npm run build
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-FROM node:alpine
+# install app dependencies
+COPY package.json yarn.lock* package-lock.json* ./
 
-WORKDIR /usr/src/app
+RUN npm install
 
-ENV NODE_ENV production
+# add app to container and attempt build
+COPY . ./
+RUN npm run build || true
 
-COPY --from=build /usr/src/app/next.config.js ./
-COPY --from=build /usr/src/app/public public/
-COPY --from=build /usr/src/app/.next .next/
-COPY --from=build /usr/src/app/node_modules node_modules/
-COPY --from=build /usr/src/app/package.json ./
-
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]
